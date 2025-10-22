@@ -1,4 +1,4 @@
-# Python
+# Backend
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,6 +25,11 @@ wheels/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Firebase credentials (NEVER commit these!)
+*firebase*.json
+*firebase*adminsdk*.json
+firebase-key.json
 
 # Node
 node_modules/

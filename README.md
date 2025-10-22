@@ -117,14 +117,77 @@
 
 ## 🚀 Installazione Locale
 
-### 1. Clone del Repository
+### Opzione A: Docker Compose (Raccomandato) 🐳
+
+Il modo più semplice per eseguire l'intero stack in locale:
 
 ```bash
-git clone https://github.com/yourusername/casa-piu.git
+# 1. Clone del repository
+git clone https://github.com/letalreb/casa-piu.git
+cd casa-piu
+
+# 2. Setup automatico (crea file .env)
+make setup
+
+# 3. Configura le variabili d'ambiente
+# Modifica .env, backend/.env, frontend/.env con le tue credenziali
+
+# 4. Scarica firebase-key.json da Firebase Console
+# e salvalo in backend/firebase-key.json
+
+# 5. Avvia tutto lo stack
+make start
+# oppure
+./start-local.sh
+```
+
+**Comandi Makefile disponibili:**
+```bash
+make help          # Mostra tutti i comandi disponibili
+make start         # Avvia stack Docker
+make stop          # Ferma stack
+make restart       # Riavvia stack
+make logs          # Visualizza logs
+make frontend      # Avvia frontend development
+make dev           # Avvia stack + frontend insieme
+make clean         # Rimuovi tutto (container + volumi)
+make pgadmin       # Avvia PgAdmin
+```
+
+Lo script avvierà automaticamente:
+- ✅ PostgreSQL (porta 5432)
+- ✅ Redis (porta 6379)
+- ✅ Backend FastAPI (porta 8080)
+- ✅ Opzionale: PgAdmin (porta 5050)
+
+```bash
+# Visualizza i logs
+docker-compose logs -f
+
+# Ferma lo stack
+./stop-local.sh
+
+# Riavvia un singolo servizio
+docker-compose restart backend
+```
+
+Ora avvia il frontend:
+```bash
+cd frontend
+npm install
+npm start
+```
+
+### Opzione B: Setup Manuale
+
+#### 1. Clone del Repository
+
+```bash
+git clone https://github.com/letalreb/casa-piu.git
 cd casa-piu
 ```
 
-### 2. Setup Backend
+##### 2. Setup Backend
 
 ```bash
 cd backend
@@ -143,7 +206,7 @@ cp .env.example .env
 # Modifica .env con le tue credenziali
 ```
 
-### 3. Setup Frontend
+##### 3. Setup Frontend
 
 ```bash
 cd frontend
@@ -156,16 +219,16 @@ cp .env.example .env
 # Modifica .env con le tue credenziali
 ```
 
-### 4. Database Setup
+##### 4. Database Setup
 
-#### Opzione A: Supabase (Raccomandato)
+**Opzione 1: Supabase (Raccomandato)**
 
 1. Vai su [Supabase](https://app.supabase.com)
 2. Crea un nuovo progetto
 3. Esegui il file `supabase/schema.sql` nell'editor SQL
 4. Copia la connection string in `.env`
 
-#### Opzione B: PostgreSQL Locale
+**Opzione 2: PostgreSQL Locale**
 
 ```bash
 # Crea database
@@ -176,9 +239,9 @@ cd backend
 alembic upgrade head
 ```
 
-### 5. Avvio Applicazione
+#### 5. Avvio Applicazione
 
-#### Backend
+**Backend**
 
 ```bash
 cd backend
@@ -344,7 +407,90 @@ chmod +x deploy/deploy.sh
   }
   ```
 
-## 📁 Struttura Progetto
+## � Docker Compose
+
+Lo stack completo include:
+
+### Servizi
+
+| Servizio | Porta | Descrizione |
+|----------|-------|-------------|
+| **backend** | 8080 | FastAPI backend con hot-reload |
+| **postgres** | 5432 | PostgreSQL 15 con schema precaricato |
+| **redis** | 6379 | Redis per APScheduler job store |
+| **pgadmin** | 5050 | PgAdmin (opzionale, profile `tools`) |
+
+### Comandi Utili
+
+```bash
+# Avvia tutto
+./start-local.sh
+
+# Visualizza logs
+docker-compose logs -f backend
+docker-compose logs -f postgres
+
+# Accedi al container
+docker-compose exec backend bash
+docker-compose exec postgres psql -U casapiu -d casapiu
+
+# Riavvia un servizio
+docker-compose restart backend
+
+# Ricostruisci immagine
+docker-compose build backend
+docker-compose up -d backend
+
+# Ferma tutto
+./stop-local.sh
+
+# Avvia PgAdmin (opzionale)
+docker-compose --profile tools up -d pgadmin
+# Accedi su http://localhost:5050
+# Email: admin@casapiu.local | Password: admin
+```
+
+### Volumi Persistenti
+
+I dati sono salvati in volumi Docker:
+- `postgres_data`: Database PostgreSQL
+- `redis_data`: Redis cache
+- `pgadmin_data`: Configurazione PgAdmin
+
+Per rimuovere tutti i dati:
+```bash
+docker-compose down -v
+```
+
+### Troubleshooting Docker
+
+**Porta già in uso**
+```bash
+# Controlla cosa usa la porta 8080
+lsof -i :8080
+# Ferma il processo o cambia porta in docker-compose.yml
+```
+
+**Backend non si avvia**
+```bash
+# Verifica logs
+docker-compose logs backend
+
+# Ricostruisci immagine
+docker-compose build --no-cache backend
+docker-compose up -d backend
+```
+
+**Database non inizializzato**
+```bash
+# Rimuovi volume e ricrea
+docker-compose down -v
+docker-compose up -d postgres
+# Attendi 10 secondi
+docker-compose up -d backend
+```
+
+## �📁 Struttura Progetto
 
 ```
 casa-piu/
