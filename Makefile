@@ -1,4 +1,4 @@
-.PHONY: help install start stop restart logs clean build test
+.PHONY: help install start stop restart logs logs-backend logs-postgres clean build rebuild shell-backend shell-postgres frontend test-backend test-frontend pgadmin status setup dev
 
 # Colori per output
 GREEN  := \033[0;32m
