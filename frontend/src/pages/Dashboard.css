@@ -1,0 +1,178 @@
+.dashboard-container {
+  padding: 16px;
+  padding-bottom: 80px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.stat-card {
+  margin: 0;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card ion-card-content {
+  padding: 20px 10px;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  color: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0 5px 0;
+  color: var(--ion-color-dark);
+}
+
+.stat-card p {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  margin: 0;
+}
+
+.summary-card {
+  margin: 16px 0;
+}
+
+.monthly-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.summary-icon {
+  font-size: 3rem;
+  color: var(--ion-color-success);
+}
+
+.summary-amount h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.summary-amount p {
+  margin: 5px 0 0 0;
+  color: var(--ion-color-medium);
+}
+
+.title-badge {
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.reminders-list,
+.expenses-list {
+  margin-bottom: 16px;
+}
+
+.reminder-item,
+.expense-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+.reminder-item:last-child,
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.reminder-item ion-icon {
+  font-size: 1.5rem;
+  color: var(--ion-color-warning);
+  flex-shrink: 0;
+}
+
+.reminder-details {
+  flex: 1;
+}
+
+.reminder-details strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.reminder-details p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+}
+
+.expense-info {
+  flex: 1;
+}
+
+.expense-info strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.expense-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+}
+
+.expense-amount {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.expense-amount strong {
+  font-size: 1.1rem;
+}
+
+.view-all-button {
+  margin-top: 16px;
+}
+
+.quick-actions-card {
+  margin: 16px 0;
+}
+
+@media (max-width: 768px) {
+  .monthly-summary {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .summary-amount h1 {
+    font-size: 2rem;
+  }
+  
+  .stat-card ion-card-content {
+    padding: 15px 8px;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-card h2 {
+    font-size: 1.5rem;
+  }
+}
